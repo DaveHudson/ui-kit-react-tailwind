@@ -1,7 +1,7 @@
 {
   "name": "ui-kit-react-tailwind",
-  "author": "Dave Hudson",  
-  "version": "0.1.0",
+  "author": "Dave Hudson",
+  "version": "0.1.1-0",
   "license": "MIT",
   "main": "dist/index.js",
   "typings": "dist/index.d.ts",
