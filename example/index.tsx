@@ -17,7 +17,7 @@ const App = () => {
   return (
     <div>
       <form onSubmit={handleSubmit(onSubmit)}>
-        <InputEmail name="email" defaultValue="dave@hello.com" ref={register} />
+        <InputEmail name="email" placeholder="your@email.co.uk" defaultValue="dave@hello.com" ref={register} />
         <Controller
           name="subscribed"
           control={control}
