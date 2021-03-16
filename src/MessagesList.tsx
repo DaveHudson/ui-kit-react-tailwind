@@ -1,6 +1,5 @@
 import React from 'react';
 import { MessageText } from './MessageText';
-import { Message } from './types/chat/Messages';
 
 type messagesProps = {
   messages: Message[]

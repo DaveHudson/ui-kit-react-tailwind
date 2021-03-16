@@ -1,6 +1,5 @@
 import React from 'react';
 import { MessagesList } from './MessagesList'
-import { Message } from './types/chat/Messages';
 
 export const ChatContainer = () => {
   const messages = [

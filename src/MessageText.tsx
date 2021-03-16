@@ -1,5 +1,4 @@
 import React from 'react';
-import { Message } from './types/chat/Messages';
 
 type messageProps = {
   message: Message
