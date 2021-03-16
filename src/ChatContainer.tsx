@@ -22,7 +22,7 @@ export const ChatContainer = () => {
 
   return (
     <div className="max-w-lg mx-auto px-6">
-      <MessagesList {...messages} />
+      <MessagesList messages={messages} />
     </div>
   )
 }
