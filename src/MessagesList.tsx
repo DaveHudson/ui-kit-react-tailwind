@@ -2,9 +2,6 @@ import React from 'react';
 import { MessageText } from './MessageText';
 import { Message } from './types/chat/Messages';
 
-
-
-
 export const MessagesList = (messages: Message[]) => {  
   return (
     <div className="flow-root">
