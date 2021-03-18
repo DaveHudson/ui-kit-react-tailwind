@@ -6,7 +6,7 @@ it('Should render the toggle and be clickable between states', () => {
   // mock onChange function
   const onChange = jest.fn();
 
-  const { debug } = render(<Toggle enabled={false} handleChange={onChange} />);
+  const { debug } = render(<Toggle enabled={false} onChange={onChange} />);
 
   console.log(debug());
 });
