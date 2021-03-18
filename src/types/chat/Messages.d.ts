@@ -4,4 +4,4 @@ declare interface Message {
   profilePic: string;
   dateStamp: string;
   message: string;
-} 
+}
