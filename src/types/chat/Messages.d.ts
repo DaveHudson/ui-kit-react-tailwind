@@ -1,4 +1,4 @@
-declare interface Message {
+export interface Message {
   id: string;
   name: string;
   profilePic: string;

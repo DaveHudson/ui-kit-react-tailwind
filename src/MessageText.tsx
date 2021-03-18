@@ -1,11 +1,20 @@
 import React from 'react';
 
-type messageProps = {
-  message: Message;
+type Props = {
+  id: string;
+  name: string;
+  profilePic: string;
+  dateStamp: string;
+  message: string;
 };
 
-export const MessageText = ({ message }: messageProps) => {
-  const { id, name, profilePic, dateStamp, message: msg } = message;
+export const MessageText = ({
+  id,
+  name,
+  profilePic,
+  dateStamp,
+  message,
+}: Props) => {
   return (
     <li key={id}>
       <div className="relative pb-8">
@@ -48,7 +57,7 @@ export const MessageText = ({ message }: messageProps) => {
               </p>
             </div>
             <div className="mt-2 text-sm text-gray-700">
-              <p>{msg}</p>
+              <p>{message}</p>
             </div>
           </div>
         </div>

@@ -9,7 +9,24 @@ const meta: Meta = {
 
 export default meta;
 
-const message = {
+const Template: Story = (args) => {
+  const { id, name, profilePic, dateStamp, message } = args;
+
+  return (
+    <ul className="-mb-8">
+      <MessageText
+        id={id}
+        name={name}
+        profilePic={profilePic}
+        dateStamp={dateStamp}
+        message={message}
+      />
+    </ul>
+  );
+};
+
+export const SCMessageText = Template.bind({});
+SCMessageText.args = {
   id: '1',
   name: 'Eduardo Benz',
   profilePic:
@@ -18,11 +35,3 @@ const message = {
   message:
     'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Tincidunt nunc ipsum tempor purus vitae id. Morbi in vestibulum nec varius. Et diam cursus quis sed purus nam.',
 };
-const Template: Story = (args) => (
-  <ul className="-mb-8">
-    <MessageText message={message} {...args} />
-  </ul>
-);
-
-export const SCMessageText = Template.bind({});
-SCMessageText.args = {};
