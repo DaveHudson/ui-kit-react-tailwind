@@ -6,6 +6,7 @@ type Props = {
   profilePic: string;
   dateStamp: string;
   message: string;
+  hasMoreLinkedMessages?: boolean;
 };
 
 export const MessageText = ({
@@ -14,14 +15,17 @@ export const MessageText = ({
   profilePic,
   dateStamp,
   message,
+  hasMoreLinkedMessages,
 }: Props) => {
   return (
     <li key={id}>
       <div className="relative pb-8">
-        <span
-          className="absolute top-5 left-5 -ml-px h-full w-0.5 bg-gray-200"
-          aria-hidden="true"
-        ></span>
+        {hasMoreLinkedMessages && (
+          <span
+            className="absolute top-5 left-5 -ml-px h-full w-0.5 bg-gray-200"
+            aria-hidden="true"
+          ></span>
+        )}
         <div className="relative flex items-start space-x-3">
           <div className="relative">
             <img

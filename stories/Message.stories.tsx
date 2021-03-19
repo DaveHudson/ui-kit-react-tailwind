@@ -34,4 +34,5 @@ SCMessageText.args = {
   dateStamp: '6 days ago',
   message:
     'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Tincidunt nunc ipsum tempor purus vitae id. Morbi in vestibulum nec varius. Et diam cursus quis sed purus nam.',
+  isLastMessage: true,
 };

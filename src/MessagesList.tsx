@@ -7,21 +7,36 @@ type Props = {
 };
 
 export const MessagesList = ({ messages }: Props) => {
+  const messageLength = messages.length;
   return (
     <div className="flow-root">
       <ul className="-mb-8">
-        {messages.map((message: Message) => {
+        {messages.map((message: Message, i: number) => {
           const { id, name, profilePic, dateStamp, message: msg } = message;
-          return (
-            <MessageText
-              id={id}
-              name={name}
-              profilePic={profilePic}
-              dateStamp={dateStamp}
-              message={msg}
-              key={message.id}
-            />
-          );
+          if (i === messageLength - 1) {
+            return (
+              <MessageText
+                key={message.id}
+                id={id}
+                name={name}
+                profilePic={profilePic}
+                dateStamp={dateStamp}
+                message={msg}
+              />
+            );
+          } else {
+            return (
+              <MessageText
+                key={message.id}
+                id={id}
+                name={name}
+                profilePic={profilePic}
+                dateStamp={dateStamp}
+                message={msg}
+                hasMoreLinkedMessages={true}
+              />
+            );
+          }
         })}
       </ul>
     </div>
