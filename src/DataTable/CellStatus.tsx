@@ -5,17 +5,21 @@ export type Props = {
   status: string;
 };
 
+function capitaliseFirstLetter(string: string) {
+  return string.charAt(0).toUpperCase() + string.slice(1);
+}
+
 export const CellStatus = ({ cellProps, status }: Props) => {
   return (
     <td className="px-6 py-4 whitespace-nowrap" {...cellProps}>
       {status === 'available' && (
         <span className="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-green-100 text-green-800">
-          {status}
+          {capitaliseFirstLetter(status)}
         </span>
       )}
       {status === 'unavailable' && (
         <span className="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-red-100 text-red-800">
-          {status}
+          {capitaliseFirstLetter(status)}
         </span>
       )}
     </td>
