@@ -45,7 +45,7 @@ export const DataTable = () => {
                     className="bg-white divide-y divide-gray-200"
                     {...getTableBodyProps()}
                   >
-                    {rows.map((row, i) => {
+                    {rows.map((row) => {
                       prepareRow(row);
                       return (
                         <tr {...row.getRowProps()}>
