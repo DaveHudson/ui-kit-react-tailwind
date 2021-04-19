@@ -1,8 +1,25 @@
 import React from 'react';
-import { useTable } from 'react-table';
+import { useTable, useRowSelect } from 'react-table';
 import { CellName } from './CellName';
 import { CellStatus } from './CellStatus';
 import { CellText } from './CellText';
+
+const IndeterminateCheckbox = React.forwardRef(
+  ({ indeterminate, ...rest }, ref) => {
+    const defaultRef = React.useRef();
+    const resolvedRef = ref || defaultRef;
+
+    React.useEffect(() => {
+      resolvedRef.current.indeterminate = indeterminate;
+    }, [resolvedRef, indeterminate]);
+
+    return (
+      <>
+        <input type="checkbox" ref={resolvedRef} {...rest} />
+      </>
+    );
+  }
+);
 
 export const DataTable = () => {
   function Table({ columns, data }: any) {
@@ -13,10 +30,38 @@ export const DataTable = () => {
       headerGroups,
       rows,
       prepareRow,
-    } = useTable({
-      columns,
-      data,
-    });
+      selectedFlatRows,
+      state: { selectedRowIds },
+    } = useTable(
+      {
+        columns,
+        data,
+      },
+      useRowSelect,
+      (hooks) => {
+        hooks.visibleColumns.push((columns) => [
+          // Let's make a column for selection
+          {
+            id: 'selection',
+            // The header can use the table's getToggleAllRowsSelectedProps method
+            // to render a checkbox
+            Header: ({ getToggleAllRowsSelectedProps }) => (
+              <div>
+                <IndeterminateCheckbox {...getToggleAllRowsSelectedProps()} />
+              </div>
+            ),
+            // The cell can use the individual row's getToggleRowSelectedProps method
+            // to the render a checkbox
+            Cell: ({ row }) => (
+              <div>
+                <IndeterminateCheckbox {...row.getToggleRowSelectedProps()} />
+              </div>
+            ),
+          },
+          ...columns,
+        ]);
+      }
+    );
 
     // Render the UI for your table
     return (
@@ -30,25 +75,23 @@ export const DataTable = () => {
                   {...getTableProps()}
                 >
                   <thead className="bg-gray-50">
-                    {headerGroups.map((headerGroup) => (
-                      <tr {...headerGroup.getHeaderGroupProps()}>
-                        {headerGroup.headers.map((column) => (
-                          <th
-                            scope="col"
-                            className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
-                            {...column.getHeaderProps()}
-                          >
-                            {column.render('Header')}
-                          </th>
-                        ))}
-                      </tr>
-                    ))}
+                    <tr {...headerGroups[1].getHeaderGroupProps()}>
+                      {headerGroups[1].headers.map((column) => (
+                        <th
+                          scope="col"
+                          className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
+                          {...column.getHeaderProps()}
+                        >
+                          {column.render('Header')}
+                        </th>
+                      ))}
+                    </tr>
                   </thead>
                   <tbody
                     className="bg-white divide-y divide-gray-200"
                     {...getTableBodyProps()}
                   >
-                    {rows.map((row) => {
+                    {rows.slice(0, 10).map((row, i) => {
                       prepareRow(row);
                       return (
                         <tr {...row.getRowProps()}>
@@ -78,12 +121,21 @@ export const DataTable = () => {
                                     status={cell.value}
                                   />
                                 );
-                              default:
+                              case 'Age':
                                 return (
                                   <CellText
                                     cellProps={cellProps}
                                     text={cell.value}
                                   />
+                                );
+                              default:
+                                return (
+                                  <td
+                                    className="px-6 py-4 whitespace-nowrap text-sm text-gray-500"
+                                    {...cell.getCellProps()}
+                                  >
+                                    {cell.render('Cell')}
+                                  </td>
                                 );
                             }
                           })}
@@ -96,6 +148,21 @@ export const DataTable = () => {
             </div>
           </div>
         </div>
+        <p>Selected Rows: {Object.keys(selectedRowIds).length}</p>
+        <pre>
+          <code>
+            {JSON.stringify(
+              {
+                selectedRowIds: selectedRowIds,
+                'selectedFlatRows[].original': selectedFlatRows.map(
+                  (d) => d.original
+                ),
+              },
+              null,
+              2
+            )}
+          </code>
+        </pre>
       </div>
     );
   }
