@@ -101,7 +101,7 @@ export const DataTable = () => {
                     className="bg-white divide-y divide-gray-200"
                     {...getTableBodyProps()}
                   >
-                    {rows.slice(0, 10).map((row, i) => {
+                    {rows.slice(0, 10).map((row) => {
                       prepareRow(row);
                       return (
                         <tr {...row.getRowProps()}>
