@@ -1,5 +1,5 @@
 import React from 'react';
-import { useTable, useRowSelect } from 'react-table';
+import { useTable, useRowSelect, useSortBy } from 'react-table';
 import { CellName } from './CellName';
 import { CellStatus } from './CellStatus';
 import { CellText } from './CellText';
@@ -37,6 +37,7 @@ export const DataTable = () => {
         columns,
         data,
       },
+      useSortBy,
       useRowSelect,
       (hooks) => {
         hooks.visibleColumns.push((columns) => [
@@ -80,9 +81,18 @@ export const DataTable = () => {
                         <th
                           scope="col"
                           className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
-                          {...column.getHeaderProps()}
+                          {...column.getHeaderProps(
+                            column.getSortByToggleProps()
+                          )}
                         >
                           {column.render('Header')}
+                          <span>
+                            {column.isSorted
+                              ? column.isSortedDesc
+                                ? ' 🔽'
+                                : ' 🔼'
+                              : ''}
+                          </span>
                         </th>
                       ))}
                     </tr>
