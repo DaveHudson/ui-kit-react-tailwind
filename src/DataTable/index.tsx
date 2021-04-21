@@ -15,13 +15,18 @@ const IndeterminateCheckbox = React.forwardRef(
 
     return (
       <>
-        <input type="checkbox" ref={resolvedRef} {...rest} />
+        <input
+          type="checkbox"
+          className="h-4 w-4 text-green-600 focus:ring-green-500 border-gray-300 rounded"
+          ref={resolvedRef}
+          {...rest}
+        />
       </>
     );
   }
 );
 
-export const DataTable = () => {
+export const DataTable = ({ columns, data }) => {
   function Table({ columns, data }: any) {
     // Use the state and functions returned from useTable to build your UI
     const {
@@ -40,27 +45,29 @@ export const DataTable = () => {
       useSortBy,
       useRowSelect,
       (hooks) => {
-        hooks.visibleColumns.push((columns) => [
-          // Let's make a column for selection
-          {
-            id: 'selection',
-            // The header can use the table's getToggleAllRowsSelectedProps method
-            // to render a checkbox
-            Header: ({ getToggleAllRowsSelectedProps }) => (
-              <div>
-                <IndeterminateCheckbox {...getToggleAllRowsSelectedProps()} />
-              </div>
-            ),
-            // The cell can use the individual row's getToggleRowSelectedProps method
-            // to the render a checkbox
-            Cell: ({ row }) => (
-              <div>
-                <IndeterminateCheckbox {...row.getToggleRowSelectedProps()} />
-              </div>
-            ),
-          },
-          ...columns,
-        ]);
+        hooks.visibleColumns.push((columns) => {
+          return [
+            // Let's make a column for selection
+            {
+              id: 'selection',
+              // The header can use the table's getToggleAllRowsSelectedProps method
+              // to render a checkbox
+              Header: ({ getToggleAllRowsSelectedProps }) => (
+                <span>
+                  <IndeterminateCheckbox {...getToggleAllRowsSelectedProps()} />
+                </span>
+              ),
+              // The cell can use the individual row's getToggleRowSelectedProps method
+              // to the render a checkbox
+              Cell: ({ row }) => (
+                <span>
+                  <IndeterminateCheckbox {...row.getToggleRowSelectedProps()} />
+                </span>
+              ),
+            },
+            ...columns,
+          ];
+        });
       }
     );
 
@@ -77,24 +84,48 @@ export const DataTable = () => {
                 >
                   <thead className="bg-gray-50">
                     <tr {...headerGroups[1].getHeaderGroupProps()}>
-                      {headerGroups[1].headers.map((column) => (
-                        <th
-                          scope="col"
-                          className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
-                          {...column.getHeaderProps(
-                            column.getSortByToggleProps()
-                          )}
-                        >
-                          {column.render('Header')}
-                          <span>
-                            {column.isSorted
-                              ? column.isSortedDesc
-                                ? ' 🔽'
-                                : ' 🔼'
-                              : ''}
-                          </span>
-                        </th>
-                      ))}
+                      {headerGroups[1].headers.map((column) => {
+                        console.log('column', column);
+                        if (column.id === 'selection') {
+                          console.log('SELECTION');
+                          return (
+                            <th
+                              scope="col"
+                              className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider w-10"
+                              {...column.getHeaderProps(
+                                column.getSortByToggleProps()
+                              )}
+                            >
+                              {column.render('Header')}
+                              <span>
+                                {column.isSorted
+                                  ? column.isSortedDesc
+                                    ? ' 🔽'
+                                    : ' 🔼'
+                                  : ''}
+                              </span>
+                            </th>
+                          );
+                        }
+                        return (
+                          <th
+                            scope="col"
+                            className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
+                            {...column.getHeaderProps(
+                              column.getSortByToggleProps()
+                            )}
+                          >
+                            {column.render('Header')}
+                            <span>
+                              {column.isSorted
+                                ? column.isSortedDesc
+                                  ? ' 🔽'
+                                  : ' 🔼'
+                                : ''}
+                            </span>
+                          </th>
+                        );
+                      })}
                     </tr>
                   </thead>
                   <tbody
@@ -106,10 +137,10 @@ export const DataTable = () => {
                       return (
                         <tr {...row.getRowProps()}>
                           {row.cells.map((cell) => {
-                            const cellType = cell.column.Header;
                             const cellProps = cell.getCellProps();
-                            switch (cellType) {
-                              case 'Name': {
+                            const cellId = cell.column.id;
+                            switch (cellId) {
+                              case 'name': {
                                 const {
                                   firstName,
                                   lastName,
@@ -124,21 +155,30 @@ export const DataTable = () => {
                                   />
                                 );
                               }
-                              case 'Status':
+                              case 'status': {
                                 return (
                                   <CellStatus
                                     cellProps={cellProps}
                                     status={cell.value}
                                   />
                                 );
-                              case 'Age':
+                              }
+                              case 'age':
                                 return (
                                   <CellText
                                     cellProps={cellProps}
                                     text={cell.value}
                                   />
                                 );
-                              default:
+                              case 'networkName': {
+                                return (
+                                  <CellText
+                                    cellProps={cellProps}
+                                    text={cell.value}
+                                  />
+                                );
+                              }
+                              case 'selection':
                                 return (
                                   <td
                                     className="px-6 py-4 whitespace-nowrap text-sm text-gray-500"
@@ -147,6 +187,14 @@ export const DataTable = () => {
                                     {cell.render('Cell')}
                                   </td>
                                 );
+                              default: {
+                                return (
+                                  <CellText
+                                    cellProps={cellProps}
+                                    text={cell.value}
+                                  />
+                                );
+                              }
                             }
                           })}
                         </tr>
@@ -176,52 +224,6 @@ export const DataTable = () => {
       </div>
     );
   }
-
-  const columns = React.useMemo(
-    () => [
-      {
-        Header: 'Personal Info',
-        columns: [
-          {
-            Header: 'Name',
-            accessor: 'name',
-          },
-          {
-            Header: 'Age',
-            accessor: 'age',
-          },
-          {
-            Header: 'Status',
-            accessor: 'status',
-          },
-        ],
-      },
-    ],
-    []
-  );
-
-  const data = [
-    {
-      name: {
-        profilePic: '',
-        firstName: 'Dave',
-        lastName: 'Hudson',
-        email: 'dave@name.co.uk',
-      },
-      age: 23,
-      status: 'available',
-    },
-    {
-      name: {
-        profilePic: '',
-        firstName: 'Scarlett',
-        lastName: 'Hudson',
-        email: 'scarlett@name.co.uk',
-      },
-      age: 10,
-      status: 'unavailable',
-    },
-  ];
 
   return <Table columns={columns} data={data} />;
 };

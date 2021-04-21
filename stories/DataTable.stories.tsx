@@ -10,8 +10,88 @@ const meta: Meta = {
 export default meta;
 
 const Template: Story = (args) => {
-  return <DataTable />;
+  const { columns, data } = args;
+  return <DataTable columns={columns} data={data} />;
 };
 
 export const SCDataTable = Template.bind({});
-SCDataTable.args = {};
+SCDataTable.args = {
+  columns: [
+    {
+      Header: 'Personal Info',
+      columns: [
+        {
+          Header: 'Name',
+          accessor: 'name',
+        },
+        {
+          Header: 'Age',
+          accessor: 'age',
+        },
+        {
+          Header: 'Status',
+          accessor: 'status',
+        },
+      ],
+    },
+  ],
+  data: [
+    {
+      name: {
+        profilePic: '',
+        firstName: 'Dave',
+        lastName: 'Hudson',
+        email: 'dave@name.co.uk',
+      },
+      age: 23,
+      status: 'available',
+    },
+    {
+      name: {
+        profilePic: '',
+        firstName: 'Scarlett',
+        lastName: 'Hudson',
+        email: 'scarlett@name.co.uk',
+      },
+      age: 10,
+      status: 'unavailable',
+    },
+  ],
+};
+
+export const NetworksTable = Template.bind({});
+NetworksTable.args = {
+  columns: [
+    {
+      Header: 'Networks',
+      columns: [
+        {
+          Header: 'Network Name',
+          accessor: 'networkName',
+        },
+        {
+          Header: 'Status',
+          accessor: 'status',
+        },
+      ],
+    },
+  ],
+  data: [
+    {
+      networkName: 'NHS',
+      status: 'ACTIVATED',
+    },
+    {
+      networkName: 'MoD',
+      status: 'ACTIVATED',
+    },
+    {
+      networkName: 'Pando',
+      status: 'ACTIVATED',
+    },
+    {
+      networkName: 'BUPA',
+      status: 'PENDING',
+    },
+  ],
+};
