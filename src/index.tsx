@@ -4,3 +4,6 @@ export * from './ChatContainer';
 export * from './MessagesList';
 export * from './MessageText';
 export * from './DataTable/index';
+export * from './Pagination';
+export * from './InputSearch';
+export * from './ButtonGroup';
