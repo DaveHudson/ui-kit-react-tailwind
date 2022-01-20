@@ -1,3 +1,4 @@
+//@ts-nocheck
 import React from 'react';
 import { useTable, useRowSelect, useSortBy } from 'react-table';
 import { CellName } from './CellName';
