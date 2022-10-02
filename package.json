@@ -64,7 +64,7 @@
     "@headlessui/react": "^1.4.3",
     "@heroicons/react": "^1.0.5",
     "@size-limit/preset-small-lib": "^7.0.5",
-    "@storybook/addon-essentials": "^6.4.14",
+    "@storybook/addon-essentials": "^6.5.12",
     "@storybook/addon-info": "^5.3.21",
     "@storybook/addon-links": "^6.4.14",
     "@storybook/addons": "^6.4.14",
